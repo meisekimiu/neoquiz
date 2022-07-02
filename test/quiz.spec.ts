@@ -48,6 +48,7 @@ const exampleSimpleMap = {
 describe('NeoQuiz', () => {
   let quiz: NeoQuiz;
   beforeEach(() => {
+    exampleQuestion.multipleChoice = false;
     quiz = new NeoQuiz();
   });
   it('should exist', () => {
@@ -89,6 +90,19 @@ describe('NeoQuiz', () => {
         quiz.start();
       }).toThrow();
     });
+  });
+  it('should allow multiple choice answers', () => {
+    const mcQuestion = Object.assign({}, exampleQuestion);
+    mcQuestion.multipleChoice = true;
+    quiz.addQuestion(mcQuestion);
+    quiz.addQuestion(exampleQuestion);
+    quiz.addResult(exampleResults[0]);
+    quiz.addResult(exampleResults[1]);
+    quiz.start();
+    quiz.answer([0, 1]);
+    expect(() => {
+      quiz.answer([0, 1]);
+    }).toThrow();
   });
   it('should let you start the quiz and take it', () => {
     quiz.addQuestion(exampleQuestion);

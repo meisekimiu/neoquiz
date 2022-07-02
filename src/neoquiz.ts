@@ -89,24 +89,23 @@ export class NeoQuiz {
     this.values = new Map<string, number>();
   }
 
-  public answer(answerNumber: number): void {
+  public answer(answerNumber: number | number[]): void {
     if (this.state !== QuizState.IN_PROGRESS) {
       throw new Error(
         'You cannot answer a question to a quiz that is not in progress!'
       );
     }
-    const answer = this.questions[this._currentQuestion].answers[answerNumber];
-    if (typeof answer === 'string') {
-      // This is a null answer, probably just for fun, so we don't have to process any values here!
-    } else {
-      for (const n in answer.values) {
-        if (!this.values.has(n)) {
-          this.values.set(n, answer.values[n]);
-        } else {
-          const value = (this.values.get(n) as number) + answer.values[n];
-          this.values.set(n, value);
-        }
+    if (Array.isArray(answerNumber)) {
+      if (!this.questions[this._currentQuestion].multipleChoice) {
+        throw new Error(
+          'You cannot answer this question with multiple choices.'
+        );
       }
+      for (const x of answerNumber) {
+        this.registerAnswerValues(x);
+      }
+    } else {
+      this.registerAnswerValues(answerNumber);
     }
     this._currentQuestion++;
     if (this._currentQuestion >= this.questions.length) {
@@ -126,5 +125,21 @@ export class NeoQuiz {
       this.finalResult = this.results[0];
     }
     this.state = QuizState.FINISHED;
+  }
+
+  protected registerAnswerValues(answerNumber: number): void {
+    const answer = this.questions[this._currentQuestion].answers[answerNumber];
+    if (typeof answer === 'string') {
+      // This is a null answer, probably just for fun, so we don't have to process any values here!
+    } else {
+      for (const n in answer.values) {
+        if (!this.values.has(n)) {
+          this.values.set(n, answer.values[n]);
+        } else {
+          const value = (this.values.get(n) as number) + answer.values[n];
+          this.values.set(n, value);
+        }
+      }
+    }
   }
 }

@@ -6,6 +6,7 @@ module.exports = {
     neoquiz: './src/index.ts',
   },
   optimization: {
+    minimize: true,
     minimizer: [
       new UglifyJsPlugin({
         terserOptions: {
@@ -29,12 +30,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx', '.json'],
-    // alias: {
-    //     '@assets': path.resolve(__dirname, 'src/assets/'),
-    //     '@util': path.resolve(__dirname, 'src/util/'),
-    //     '@localtypes': path.resolve(__dirname, 'src/types/'),
-    //     '@src': path.resolve(__dirname, 'src/'),
-    // },
     symlinks: false,
   },
   devServer: {
@@ -47,6 +42,6 @@ module.exports = {
   mode: 'development',
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, 'dist'),
   },
 };

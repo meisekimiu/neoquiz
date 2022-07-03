@@ -148,8 +148,10 @@ export class NeoQuizUi {
       },
       ['results-container']
     );
+    const shareHTML = document.createElement('textarea');
+    shareHTML.innerText = 'Loading HTML...';
     if (this.quiz.result?.image) {
-      this.appendElement(
+      const img = this.appendElement(
         'img',
         undefined,
         {
@@ -157,7 +159,7 @@ export class NeoQuizUi {
         },
         [],
         resultsContainer
-      );
+      ) as HTMLImageElement;
 
       if (this.quiz.result?.imageAttribution) {
         const attribution = this.appendElement('span', undefined, {}, [
@@ -165,6 +167,14 @@ export class NeoQuizUi {
         ]);
         attribution.innerHTML = this.quiz.result.imageAttribution;
       }
+
+      // Convert local path to full URL for sharing purposes.
+      img.addEventListener('load', () => {
+        img.setAttribute('src', img.src);
+        shareHTML.innerText = resultsContainer.outerHTML;
+      });
+    } else {
+      shareHTML.innerText = resultsContainer.outerHTML;
     }
     this.appendElement('h3', this.quiz.result?.name, {}, [], resultsContainer);
     this.appendElement(
@@ -184,7 +194,7 @@ export class NeoQuizUi {
       resultsContainer
     );
     this.appendElement('p', 'Share this result (HTML):', {}, ['share-html']);
-    this.appendElement('textarea', resultsContainer.outerHTML);
+    this.root.appendChild(shareHTML);
     const retakeBtn = this.appendElement('button', 'Retake this quiz!', {}, [
       'retake-quiz',
     ]);

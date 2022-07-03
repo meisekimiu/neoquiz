@@ -1,10 +1,19 @@
+import { NeoQuizUi } from './neoquiz-ui';
 import { Question, QuestionAnswer } from './question';
 import { Result, ResultStrategy } from './result';
 import { SimpleResultStrategy } from './simpleresults';
 
+export interface QuizMetaData {
+  title: string;
+  description: string;
+  image?: string;
+  startText?: string;
+}
+
 export interface QuizData {
   questions: Question[];
   results: Result[];
+  metadata?: QuizMetaData;
 }
 
 export enum QuizState {
@@ -19,6 +28,8 @@ export class NeoQuiz {
   protected resultStrategies: ResultStrategy[] = [];
   protected state: QuizState = QuizState.WAITING;
   protected finalResult: Result | null = null;
+  protected metadata: QuizMetaData | undefined;
+  protected ui: NeoQuizUi | undefined;
 
   protected values: Map<string, number> = new Map<string, number>();
   protected _currentQuestion: number = 0;
@@ -27,8 +38,16 @@ export class NeoQuiz {
     return this.questions.length;
   }
 
-  get currentQuestion(): number {
+  get currentQuestionNumber(): number {
     return this._currentQuestion;
+  }
+
+  get currentQuestion(): Question {
+    return this.questions[this._currentQuestion];
+  }
+
+  get currentState(): QuizState {
+    return this.state;
   }
 
   get started(): boolean {
@@ -43,6 +62,22 @@ export class NeoQuiz {
     return this.finalResult as Result;
   }
 
+  get title(): string {
+    return this.metadata?.title ?? 'Untitled Quiz';
+  }
+
+  get description(): string {
+    return this.metadata?.description ?? '';
+  }
+
+  get image(): string | undefined {
+    return this.metadata?.image;
+  }
+
+  get uiStartText(): string {
+    return this.metadata?.startText ?? 'Start';
+  }
+
   constructor(data?: QuizData) {
     if (data) {
       for (const q of data.questions) {
@@ -51,7 +86,14 @@ export class NeoQuiz {
       for (const r of data.results) {
         this.addResult(r);
       }
+      if (data.metadata) {
+        this.metadata = data.metadata;
+      }
     }
+  }
+
+  public addMetaData(metadata: QuizMetaData): void {
+    this.metadata = metadata;
   }
 
   public addQuestion(question: Question): void {
@@ -73,6 +115,11 @@ export class NeoQuiz {
     this.resultStrategies.push(strategy);
   }
 
+  public bindTo(node: Element): void {
+    this.ui = new NeoQuizUi(node, this);
+    this.render();
+  }
+
   public start(): void {
     if (this.questions.length === 0) {
       throw new Error('Cannot start a quiz with no questions!');
@@ -87,6 +134,7 @@ export class NeoQuiz {
     this._currentQuestion = 0;
     this.finalResult = null;
     this.values = new Map<string, number>();
+    this.render();
   }
 
   public answer(answerNumber: number | number[]): void {
@@ -111,6 +159,7 @@ export class NeoQuiz {
     if (this._currentQuestion >= this.questions.length) {
       this.decideResults();
     }
+    this.render();
   }
 
   protected decideResults(): void {
@@ -140,6 +189,12 @@ export class NeoQuiz {
           this.values.set(n, value);
         }
       }
+    }
+  }
+
+  protected render(): void {
+    if (this.ui) {
+      this.ui.render();
     }
   }
 }

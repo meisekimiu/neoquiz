@@ -115,9 +115,9 @@ describe('NeoQuiz', () => {
     quiz.start();
     expect(quiz.started).toBeTruthy();
     expect(quiz.finished).toBeFalsy();
-    expect(quiz.currentQuestion).toBe(0);
+    expect(quiz.currentQuestionNumber).toBe(0);
     quiz.answer(0);
-    expect(quiz.currentQuestion).toBe(1);
+    expect(quiz.currentQuestionNumber).toBe(1);
     quiz.answer(0);
     expect(quiz.finished).toBeTruthy();
     const result = quiz.result as Result;

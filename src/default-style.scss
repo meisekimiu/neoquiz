@@ -1,0 +1,120 @@
+@mixin desktop {
+  @media screen and (min-width: 900px) {
+    @content;
+  }
+}
+
+.neoquiz {
+  & * {
+    box-sizing: border-box;
+  }
+  box-sizing: border-box;
+  border: 5px outset #000;
+  padding: 2em;
+  width: 100%;
+  font-size: 1.2em;
+  line-height: 1.2;
+
+  h2 {
+    text-align: center;
+  }
+
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+
+  button {
+    font-size: 1.2em;
+    padding: 0.5em;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .quiz-question {
+    .quiz-numbers {
+      .current-number,
+      .total-number {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      font-size: 1rem;
+      .of {
+        font-size: 0.9rem;
+      }
+    }
+    h3 {
+      margin-top: 0em;
+    }
+  }
+
+  .quiz-answers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    align-content: stretch;
+
+    label {
+      width: 100%;
+      margin: 0.5rem;
+      font-size: 1.5rem;
+
+      div {
+        padding: 0.5rem;
+        border: 1px solid #000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+      }
+
+      @include desktop {
+        width: 45%;
+      }
+    }
+
+    .next-button {
+      width: 100%;
+      margin: 0.5rem;
+    }
+  }
+
+  .results-container {
+    border: 1px dashed #000;
+    border-radius: 1em;
+    padding: 1em;
+
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+
+    h3 {
+      text-align: center;
+    }
+  }
+
+  .share-html {
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  textarea {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+  }
+
+  img {
+    max-width: 100%;
+    @include desktop {
+      max-width: 50%;
+    }
+  }
+
+  @include desktop {
+    width: 75%;
+    margin: 0 auto;
+  }
+}

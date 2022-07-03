@@ -170,7 +170,12 @@ export class NeoQuizUi {
 
       // Convert local path to full URL for sharing purposes.
       img.addEventListener('load', () => {
-        img.setAttribute('src', img.src);
+        shareHTML.innerText = resultsContainer.outerHTML;
+
+        // Resetting src is going to trigger an infinite loop of event calls. Let's delete the event listener by cloning this image and replacing it with an event-less clone.
+        const eventlessImg = document.createElement('img');
+        eventlessImg.src = img.src;
+        img.replaceWith(eventlessImg);
         shareHTML.innerText = resultsContainer.outerHTML;
       });
     } else {

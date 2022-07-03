@@ -3,6 +3,8 @@ export interface Question {
   answers: (QuestionAnswer | string)[];
   multipleChoice?: boolean;
   image?: string;
+  imageAttribution?: string;
+  shuffleAnswers?: boolean;
 }
 
 export interface QuestionAnswer {

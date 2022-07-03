@@ -1,6 +1,8 @@
 import { NeoQuiz, QuizState } from './neoquiz';
 import { QuestionAnswer } from './question';
 
+import { shuffle } from './util';
+
 export class NeoQuizUi {
   protected selectedMultipleChoices: number[] = [];
 
@@ -30,6 +32,12 @@ export class NeoQuizUi {
       this.appendElement('img', undefined, {
         src: this.quiz.image,
       });
+      if (this.quiz.imageAttribution) {
+        const attribution = this.appendElement('span', undefined, {}, [
+          'img-attribution',
+        ]);
+        attribution.innerHTML = this.quiz.imageAttribution;
+      }
     }
     this.appendElement('p', this.quiz.description);
     const startButton = this.appendElement(
@@ -50,6 +58,12 @@ export class NeoQuizUi {
       this.appendElement('img', undefined, {
         src: this.quiz.currentQuestion.image,
       });
+      if (this.quiz.currentQuestion.imageAttribution) {
+        const attribution = this.appendElement('span', undefined, {}, [
+          'img-attribution',
+        ]);
+        attribution.innerHTML = this.quiz.currentQuestion.imageAttribution;
+      }
     }
     {
       const questionContainer = this.appendElement('div', undefined, {}, [
@@ -89,8 +103,22 @@ export class NeoQuizUi {
     const quizAnswers = this.appendElement('div', undefined, {}, [
       'quiz-answers',
     ]);
-    for (let i = 0; i < this.quiz.currentQuestion.answers.length; i++) {
-      this.appendAnswer(this.quiz.currentQuestion.answers[i], i, quizAnswers);
+    if (
+      typeof this.quiz.currentQuestion.shuffleAnswers === 'undefined' ||
+      this.quiz.currentQuestion.shuffleAnswers === true
+    ) {
+      const shuffledOrder = [];
+      for (let i = 0; i < this.quiz.currentQuestion.answers.length; i++) {
+        shuffledOrder.push(i);
+      }
+      shuffle(shuffledOrder);
+      for (const i of shuffledOrder) {
+        this.appendAnswer(this.quiz.currentQuestion.answers[i], i, quizAnswers);
+      }
+    } else {
+      for (let i = 0; i < this.quiz.currentQuestion.answers.length; i++) {
+        this.appendAnswer(this.quiz.currentQuestion.answers[i], i, quizAnswers);
+      }
     }
     if (this.quiz.currentQuestion.multipleChoice) {
       const nextButton = this.appendElement(
@@ -130,6 +158,13 @@ export class NeoQuizUi {
         [],
         resultsContainer
       );
+
+      if (this.quiz.result?.imageAttribution) {
+        const attribution = this.appendElement('span', undefined, {}, [
+          'img-attribution',
+        ]);
+        attribution.innerHTML = this.quiz.result.imageAttribution;
+      }
     }
     this.appendElement('h3', this.quiz.result?.name, {}, [], resultsContainer);
     this.appendElement(

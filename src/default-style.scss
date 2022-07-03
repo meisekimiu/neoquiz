@@ -29,6 +29,7 @@
     padding: 0.5em;
     display: block;
     margin: 0 auto;
+    cursor: pointer;
   }
 
   .quiz-question {
@@ -59,8 +60,15 @@
       width: 100%;
       margin: 0.5rem;
       font-size: 1.5rem;
+      cursor: pointer;
+
+      &:hover div {
+        background-color: #0003;
+      }
 
       div {
+        background-color: #0000;
+        transition: background-color 0.3s;
         padding: 0.5rem;
         border: 1px solid #000;
         display: flex;
@@ -108,8 +116,32 @@
 
   img {
     max-width: 100%;
+    max-height: 40vh;
     @include desktop {
       max-width: 50%;
+    }
+  }
+
+  .img-attribution {
+    &::before {
+      content: '(';
+    }
+    &::after {
+      content: ')';
+    }
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    color: #0009;
+
+    a {
+      transition: color 0.3s;
+      color: #0009;
+      font-weight: bold;
+    }
+    a:hover {
+      color: #000;
     }
   }
 

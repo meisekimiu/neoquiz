@@ -7,6 +7,7 @@ export interface QuizMetaData {
   title: string;
   description: string;
   image?: string;
+  imageAttribution?: string;
   startText?: string;
 }
 
@@ -74,6 +75,10 @@ export class NeoQuiz {
     return this.metadata?.image;
   }
 
+  get imageAttribution(): string | undefined {
+    return this.metadata?.imageAttribution;
+  }
+
   get uiStartText(): string {
     return this.metadata?.startText ?? 'Start';
   }
@@ -113,6 +118,14 @@ export class NeoQuiz {
 
   public addResultStrategy(strategy: ResultStrategy): void {
     this.resultStrategies.push(strategy);
+  }
+
+  public addResultFunction(
+    func: (r: Result[], v: Map<string, number>) => Result
+  ): void {
+    this.resultStrategies.push({
+      decideResult: func,
+    });
   }
 
   public bindTo(node: Element): void {

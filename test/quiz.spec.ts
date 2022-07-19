@@ -126,4 +126,26 @@ describe('NeoQuiz', () => {
       quiz.answer(0);
     }).toThrow();
   });
+  it('should let you get a list of image URLs from the quiz', () => {
+    quiz.addQuestion(exampleQuestion);
+    quiz.addQuestion(exampleQuestion);
+    quiz.addResult(exampleResults[0]);
+    quiz.addMetaData({
+      title: 'Test',
+      description: 'Test',
+      image: 'potato.jpg',
+    });
+    const imageURLs = quiz.getImageURLs();
+    expect(imageURLs).toContain('potato.jpg');
+    expect(imageURLs).toContain('flippy.jpg');
+    expect(imageURLs).toContain('green.jpg');
+  });
+  it('removes duplicate paths from getImageURLs', () => {
+    quiz.addQuestion(exampleQuestion);
+    quiz.addQuestion(exampleQuestion);
+    quiz.addQuestion(exampleQuestion);
+    quiz.addQuestion(exampleQuestion);
+    const imageURLs = quiz.getImageURLs();
+    expect(imageURLs.length).toBe(1);
+  });
 });

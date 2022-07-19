@@ -8,7 +8,16 @@ export class NeoQuizUi {
 
   constructor(protected root: Element, protected quiz: NeoQuiz) {
     root.classList.add('neoquiz');
+    this.preLoadImages();
     this.render();
+  }
+
+  public preLoadImages() {
+    const images = this.quiz.getImageURLs();
+    for (const image of images) {
+      const img = new Image();
+      img.src = image;
+    }
   }
 
   public render(): void {

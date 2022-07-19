@@ -1,3 +1,4 @@
+import { url } from 'inspector';
 import { NeoQuizUi } from './neoquiz-ui';
 import { Question, QuestionAnswer } from './question';
 import { Result, ResultStrategy } from './result';
@@ -173,6 +174,24 @@ export class NeoQuiz {
       this.decideResults();
     }
     this.render();
+  }
+
+  public getImageURLs(): string[] {
+    const urls: string[] = [];
+    if (this.metadata?.image) {
+      urls.push(this.metadata.image);
+    }
+    const questionsResults: (Question | Result)[] = (
+      [] as (Question | Result)[]
+    ).concat(this.questions, this.results);
+    for (const x of questionsResults) {
+      if (x.image) {
+        if (!urls.includes(x.image)) {
+          urls.push(x.image);
+        }
+      }
+    }
+    return urls;
   }
 
   protected decideResults(): void {

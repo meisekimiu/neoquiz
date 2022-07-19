@@ -2,7 +2,7 @@ name: Deploy to meiseki.mew151.net
 
 on:
   release:
-    published: [main]
+    types: [published]
 
   workflow_dispatch:
 

@@ -1,5 +1,6 @@
 const path = require('path');
 const UglifyJsPlugin = require('terser-webpack-plugin');
+const version = require('./package.json').version;
 
 module.exports = {
   entry: {
@@ -41,7 +42,7 @@ module.exports = {
   },
   mode: 'development',
   output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist', `v${version}`),
   },
 };

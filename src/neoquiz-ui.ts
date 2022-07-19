@@ -3,6 +3,8 @@ import { QuestionAnswer } from './question';
 
 import { shuffle } from './util';
 
+import Package from '../package.json';
+
 export class NeoQuizUi {
   protected selectedMultipleChoices: number[] = [];
 
@@ -10,6 +12,7 @@ export class NeoQuizUi {
     root.classList.add('neoquiz');
     this.preLoadImages();
     this.render();
+    console.log('NeoQuiz v' + Package.version);
   }
 
   public preLoadImages() {

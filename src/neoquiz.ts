@@ -1,16 +1,9 @@
-import { url } from 'inspector';
+import { QuizMetaData } from './quizmetadata';
 import { NeoQuizUi } from './neoquiz-ui';
 import { Question, QuestionAnswer } from './question';
 import { Result, ResultStrategy } from './result';
 import { SimpleResultStrategy } from './simpleresults';
-
-export interface QuizMetaData {
-  title: string;
-  description: string;
-  image?: string;
-  imageAttribution?: string;
-  startText?: string;
-}
+import { getQuizMetaAltText } from './alttext';
 
 export interface QuizData {
   questions: Question[];
@@ -78,6 +71,13 @@ export class NeoQuiz {
 
   get imageAttribution(): string | undefined {
     return this.metadata?.imageAttribution;
+  }
+
+  get altText(): string {
+    if (this.metadata) {
+      return getQuizMetaAltText(this.metadata);
+    }
+    return '';
   }
 
   get uiStartText(): string {

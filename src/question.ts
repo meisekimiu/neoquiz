@@ -5,6 +5,7 @@ export interface Question {
   image?: string;
   imageAttribution?: string;
   shuffleAnswers?: boolean;
+  altText?: string;
 }
 
 export interface QuestionAnswer {

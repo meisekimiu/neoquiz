@@ -4,6 +4,7 @@ export interface Result {
   description?: string;
   image?: string;
   imageAttribution?: string;
+  altText?: string;
 }
 
 // what is this, an enterprise Java application????

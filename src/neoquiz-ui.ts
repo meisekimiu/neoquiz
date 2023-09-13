@@ -1,5 +1,6 @@
 import { NeoQuiz, QuizState } from './neoquiz';
 import { QuestionAnswer } from './question';
+import { getQuestionAltText, getResultAltText } from './alttext';
 
 import { shuffle } from './util';
 
@@ -43,6 +44,7 @@ export class NeoQuizUi {
     if (this.quiz.image) {
       this.appendElement('img', undefined, {
         src: this.quiz.image,
+        alt: this.quiz.altText,
       });
       if (this.quiz.imageAttribution) {
         const attribution = this.appendElement('span', undefined, {}, [
@@ -69,6 +71,7 @@ export class NeoQuizUi {
     if (this.quiz.currentQuestion.image) {
       this.appendElement('img', undefined, {
         src: this.quiz.currentQuestion.image,
+        alt: getQuestionAltText(this.quiz.currentQuestion),
       });
       if (this.quiz.currentQuestion.imageAttribution) {
         const attribution = this.appendElement('span', undefined, {}, [
@@ -168,6 +171,7 @@ export class NeoQuizUi {
         undefined,
         {
           src: this.quiz.result.image,
+          alt: getResultAltText(this.quiz.result),
         },
         [],
         resultsContainer
@@ -187,6 +191,7 @@ export class NeoQuizUi {
         // Resetting src is going to trigger an infinite loop of event calls. Let's delete the event listener by cloning this image and replacing it with an event-less clone.
         const eventlessImg = document.createElement('img');
         eventlessImg.src = img.src;
+        eventlessImg.alt = img.alt;
         img.replaceWith(eventlessImg);
         shareHTML.innerText = resultsContainer.outerHTML;
       });

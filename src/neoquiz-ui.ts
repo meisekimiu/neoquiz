@@ -57,7 +57,9 @@ export class NeoQuizUi {
     const startButton = this.appendElement(
       'button',
       this.quiz.uiStartText,
-      {},
+      {
+        type: 'button',
+      },
       ['start-button']
     );
     startButton.addEventListener('click', () => {
@@ -139,7 +141,7 @@ export class NeoQuizUi {
       const nextButton = this.appendElement(
         'button',
         'Next',
-        { disabled: 'disabled' },
+        { disabled: 'disabled', type: 'button' },
         ['next-button'],
         quizAnswers
       );
@@ -217,9 +219,12 @@ export class NeoQuizUi {
     );
     this.appendElement('p', 'Share this result (HTML):', {}, ['share-html']);
     this.root.appendChild(shareHTML);
-    const retakeBtn = this.appendElement('button', 'Retake this quiz!', {}, [
-      'retake-quiz',
-    ]);
+    const retakeBtn = this.appendElement(
+      'button',
+      'Retake this quiz!',
+      { type: 'button' },
+      ['retake-quiz']
+    );
     retakeBtn.addEventListener('click', () => {
       this.quiz.start();
     });
